@@ -479,6 +479,61 @@
     font-weight: 600;
     color: #333;
 }
+/* ==================== 个人设置主容器 - 强制无滚动 ==================== */
+.settings-content {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.settings-tab-content {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+#personal-tab {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.personal-container {
+    padding: 20px;
+    max-width: 100%;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.personal-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    width: 100%;
+    max-width: 100%;
+    /* 强制移除所有滚动 */
+    height: auto !important;
+    max-height: none !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+}
+
+/* 日历部分 - 完全展开 */
+#calendar-section,
+.calendar-section {
+    padding: 20px;
+    width: 100%;
+    max-width: 100%;
+    height: auto !important;
+    max-height: none !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+}
 
 .transaction-controls {
     display: flex;
@@ -1332,3 +1387,4 @@ button[disabled] {
 .day-number::after {
     content: none !important;
 }
+
