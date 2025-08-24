@@ -397,8 +397,8 @@
 #calendar-section,
 .calendar-section {
     padding: 20px 10px;
-    width: 100%;
-    max-width: 100%;
+    width: 110%;  /* 比父容器更宽 */
+    margin-left: -5%;  /* 居中对齐 */;
     /* 禁止整体滚动 */
     height: auto !important;
     max-height: none !important;
@@ -1153,7 +1153,7 @@
 /* 大屏幕优化 */
 @media (min-width: 1440px) {
     .personal-container {
-        max-width: 1800px;
+        max-width: 1440px;
         margin: 0 auto;
     }
     
@@ -1501,4 +1501,5 @@ button[disabled] {
         opacity: 0;
     }
     }
+
 
