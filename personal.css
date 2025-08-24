@@ -1153,7 +1153,7 @@
 /* 大屏幕优化 */
 @media (min-width: 1440px) {
     .personal-container {
-        max-width: 1400px;
+        max-width: 1800px;
         margin: 0 auto;
     }
     
@@ -1501,3 +1501,4 @@ button[disabled] {
         opacity: 0;
     }
     }
+
