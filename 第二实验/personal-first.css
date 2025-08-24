@@ -1,0 +1,278 @@
+/* 个人模块样式 */
+.personal-section {
+    display: none;
+    padding: 20px;
+}
+
+.personal-section.active {
+    display: block;
+}
+
+.personal-action-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    background: #667eea;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.personal-action-btn:hover {
+    background: #5a67d8;
+    transform: translateY(-2px);
+}
+
+.personal-action-btn.active {
+    background: #4c51bf;
+}
+
+.persona-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.persona-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.persona-card.active {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+.persona-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.persona-info {
+    flex: 1;
+}
+
+.persona-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.persona-gender {
+    color: #666;
+    font-size: 14px;
+}
+
+.current-badge {
+    background: #667eea;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction-amount.income {
+    color: #4caf50;
+}
+
+.transaction-amount.expense {
+    color: #f44336;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.calendar-day:hover {
+    background: #f5f5f5;
+}
+
+.calendar-day.today {
+    background: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.day-number {
+    font-size: 14px;
+    color: #333;
+}
+
+.event-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #667eea;
+    margin: 1px;
+}
+
+
+/* 三次 补充账户样式 */
+/* 交易记录分组样式 */
+.transaction-day-group {
+    margin-bottom: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.transaction-day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #e9ecef;
+    font-size: 14px;
+}
+
+.transaction-date {
+    font-weight: 600;
+    color: #495057;
+}
+
+.transaction-day-summary {
+    font-size: 13px;
+    color: #666;
+}
+
+.transaction-day-items {
+    padding: 8px 16px;
+}
+
+/* 事件列表样式 */
+.event-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.event-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+.event-item.birthday {
+    border-left: 4px solid #ff6b6b;
+}
+
+.event-item.anniversary {
+    border-left: 4px solid #ff006e;
+}
+
+.event-item.holiday {
+    border-left: 4px solid #06ffa5;
+}
+
+.event-item.reminder {
+    border-left: 4px solid #4361ee;
+}
+
+.event-icon {
+    font-size: 24px;
+    margin-right: 12px;
+}
+
+.event-info {
+    flex: 1;
+}
+
+.event-content {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.event-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: #666;
+}
+
+.event-author {
+    color: #667eea;
+}
+
+/* 日期事件列表样式 */
+.date-events-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.date-event-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.event-reminder {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.event-creator {
+    font-size: 12px;
+    color: #667eea;
+    margin-top: 4px;
+}
+
+/* 修复个人板块按钮样式 */
+.personal-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    margin: 0 8px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.personal-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.personal-action-btn.active {
+    background: linear-gradient(135deg, #4c51bf 0%, #5a4aa2 100%);
+}
+
+.personal-action-btn span {
+    font-size: 20px;
+}
