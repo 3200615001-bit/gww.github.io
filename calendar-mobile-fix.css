@@ -1,0 +1,392 @@
+/* calendar-mobile-fix.css - 日历移动端适配修复 */
+
+/* 移动端日历整体布局 */
+@media (max-width: 768px) {
+    /* 日历区域容器 */
+    #calendar-section {
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* 日历头部 */
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 0 5px;
+    }
+    
+    .calendar-header h3 {
+        font-size: 18px;
+        margin: 0;
+    }
+    
+    /* 日历控制按钮 */
+    .calendar-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .calendar-nav {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        font-size: 16px;
+        border-radius: 50%;
+        background: #f0f0f0;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .calendar-month {
+        font-size: 14px;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    /* 日历主体容器 */
+    .calendar-container {
+        width: 100%;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    /* 星期标题行 */
+    .calendar-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+    
+    .weekday {
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        color: #666;
+        padding: 5px 0;
+    }
+    
+    /* 日期网格 */
+    .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+        width: 100%;
+    }
+    
+    /* 单个日期格子 */
+    .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        border-radius: 8px;
+        background: #f9f9f9;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+        min-height: 40px;
+        font-size: 14px;
+    }
+    
+    .calendar-day:active {
+        transform: scale(0.95);
+    }
+    
+    /* 日期数字 */
+    .calendar-day .day-number {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 2px;
+    }
+    
+    /* 事件指示器 */
+    .calendar-day .event-indicators {
+        display: flex;
+        gap: 2px;
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .event-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #667eea;
+    }
+    
+    /* 特殊日期样式 */
+    .calendar-day.today {
+        background: #667eea;
+        color: white;
+    }
+    
+    .calendar-day.selected {
+        background: #f0f4ff;
+        border: 2px solid #667eea;
+    }
+    
+    .calendar-day.has-event {
+        font-weight: bold;
+    }
+    
+    .calendar-day.other-month {
+        color: #ccc;
+        background: transparent;
+    }
+    
+    /* 事件列表 */
+    .calendar-events {
+        margin-top: 20px;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .calendar-events h4 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    
+    /* 事件标签页 */
+    .event-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .event-tab {
+        padding: 8px 16px;
+        border-radius: 20px;
+        background: #f0f0f0;
+        border: none;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+    }
+    
+    .event-tab.active {
+        background: #667eea;
+        color: white;
+    }
+    
+    /* 事件列表项 */
+    .event-list {
+        max-height: 300px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .event-item {
+        padding: 12px;
+        margin-bottom: 8px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .event-item .event-time {
+        font-size: 12px;
+        color: #666;
+        min-width: 50px;
+    }
+    
+    .event-item .event-content {
+        flex: 1;
+        word-break: break-word;
+    }
+    
+    /* 日期事件编辑弹窗适配 */
+    #dateEventModal .modal-content {
+        width: 90%;
+        max-width: 400px;
+        margin: 20px auto;
+    }
+    
+    #dateEventModal .form-group {
+        margin-bottom: 15px;
+    }
+    
+    #dateEventModal label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: block;
+    }
+    
+    #dateEventModal input,
+    #dateEventModal select,
+    #dateEventModal textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+    
+    /* AI事件弹窗适配 */
+    #aiEventModal .modal-content {
+        width: 90%;
+        max-width: 400px;
+    }
+    
+    .ai-event-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .ai-event-author img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    
+    .ai-event-content {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+    
+    .ai-event-time {
+        font-size: 12px;
+        color: #666;
+    }
+    
+    /* 通知样式 */
+    .calendar-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        left: 20px;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    }
+    
+    .notification-content {
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .notification-icon {
+        font-size: 24px;
+    }
+    
+    .notification-text {
+        flex: 1;
+    }
+    
+    .notification-title {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 2px;
+    }
+    
+    .notification-message {
+        font-size: 12px;
+        color: #666;
+    }
+    
+    .notification-action,
+    .notification-close {
+        padding: 6px 12px;
+        border-radius: 15px;
+        border: none;
+        font-size: 12px;
+    }
+    
+    .notification-action {
+        background: #667eea;
+        color: white;
+    }
+    
+    .notification-close {
+        background: #f0f0f0;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+}
+
+/* 平板适配 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .calendar-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .calendar-day {
+        min-height: 50px;
+        font-size: 16px;
+    }
+    
+    .event-list {
+        max-height: 400px;
+    }
+}
+
+/* 横屏适配 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .calendar-container {
+        max-height: 70vh;
+    }
+    
+    .calendar-day {
+        min-height: 35px;
+        font-size: 12px;
+    }
+    
+    .event-list {
+        max-height: 200px;
+    }
+}
+
+/* 动画效果 */
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 确保触摸设备上的点击反馈 */
+.touch .calendar-day:active,
+.touch .calendar-nav:active,
+.touch .event-tab:active {
+    opacity: 0.8;
+    transform: scale(0.95);
+}
