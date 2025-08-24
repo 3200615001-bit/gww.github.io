@@ -773,6 +773,7 @@ function switchEventTab(tab) {
 }
 
 // 渲染事件列表
+// 渲染事件列表 - 增加删除功能
 function renderEventList(filter = 'all') {
     const list = document.getElementById('eventList');
     if (!list) return;
@@ -792,13 +793,18 @@ function renderEventList(filter = 'all') {
                 author: 'system',
                 authorName: '系统',
                 date: date,
-                createdAt: date
+                createdAt: date,
+                canDelete: false // 系统事件不可删除
             });
         });
         
         // 添加用户和AI事件
         calendarEvents[date].forEach(event => {
-            allEvents.push({...event, date: date});
+            allEvents.push({
+                ...event, 
+                date: date,
+                canDelete: event.author === 'user' // 只有用户事件可删除
+            });
         });
     });
     
@@ -817,7 +823,8 @@ function renderEventList(filter = 'all') {
                         ...event,
                         date: today,
                         content: `${event.content} (${years}周年)`,
-                        isAnniversaryReminder: true
+                        isAnniversaryReminder: true,
+                        canDelete: false // 纪念日提醒不可直接删除
                     });
                 }
             }
@@ -845,20 +852,92 @@ function renderEventList(filter = 'all') {
         const typeText = getEventTypeText(event.type);
         
         return `
-            <div class="event-item" onclick="${event.author === 'ai' ? `viewAIEvent('${event.date}', '${event.id}')` : ''}">
-                <div class="event-date">${formatEventDate(event.date)}</div>
-                <div class="event-content">
-                    ${event.content}
-                    ${typeText ? `<span class="${typeClass}">${typeText}</span>` : ''}
-                    ${event.isAnniversaryReminder ? '<span class="event-type-badge anniversary">今日纪念</span>' : ''}
+            <div class="event-item" ${event.author === 'ai' ? `onclick="viewAIEvent('${event.date}', '${event.id}')"` : ''}>
+                <div class="event-info">
+                    <div class="event-date">${formatEventDate(event.date)}</div>
+                    <div class="event-content">
+                        ${event.content}
+                        ${typeText ? `<span class="${typeClass}">${typeText}</span>` : ''}
+                        ${event.isAnniversaryReminder ? '<span class="event-type-badge anniversary">今日纪念</span>' : ''}
+                    </div>
+                    <div class="event-author">
+                        ${event.author === 'user' ? '我' : event.author === 'system' ? '系统' : event.authorName || 'AI'}
+                    </div>
                 </div>
-                <div class="event-author">
-                    ${event.author === 'user' ? '我' : event.author === 'system' ? '系统' : event.authorName || 'AI'}
-                </div>
+                ${event.canDelete ? `
+                    <button class="event-delete-btn" onclick="deleteCalendarEvent('${event.date}', '${event.id}', event)" title="删除">
+                        ×
+                    </button>
+                ` : ''}
             </div>
         `;
     }).join('');
 }
+
+// 删除日历事件
+function deleteCalendarEvent(date, eventId, event) {
+    // 阻止事件冒泡
+    if (event) {
+        event.stopPropagation();
+    }
+    
+    if (!confirm('确定要删除这个事件吗？')) {
+        return;
+    }
+    
+    // 获取当前日期的事件列表
+    if (calendarEvents[date]) {
+        // 过滤掉要删除的事件
+        calendarEvents[date] = calendarEvents[date].filter(e => e.id !== eventId);
+        
+        // 如果该日期没有事件了，删除该日期的键
+        if (calendarEvents[date].length === 0) {
+            delete calendarEvents[date];
+        }
+        
+        // 保存更新
+        saveCalendarEvents();
+        
+        // 刷新显示
+        renderCalendar();
+        renderEventList();
+        
+        // 显示成功提示
+        showNotification('事件已删除');
+    }
+}
+
+// 显示通知（新增辅助函数）
+function showNotification(message) {
+    // 创建通知元素
+    const notification = document.createElement('div');
+    notification.className = 'delete-notification';
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 3秒后移除
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+;
 
 // 获取事件类型文本
 function getEventTypeText(type) {
@@ -1215,3 +1294,5 @@ window.viewAIEvent = viewAIEvent;
 window.closeAIEventModal = closeAIEventModal;
 window.viewCalendarNotification = viewCalendarNotification;
 window.closeCalendarNotification = closeCalendarNotification;
+// 在文件末尾添加导出
+window.deleteCalendarEvent = deleteCalendarEvent
