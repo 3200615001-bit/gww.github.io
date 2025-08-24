@@ -405,13 +405,23 @@
     overflow: visible !important;
     /* 确保内容不被裁剪 */
     min-height: auto;
+    /* 居中对齐 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+
+/* 日历头部居中 */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .calendar-controls {
@@ -447,24 +457,32 @@
 }
 
 /* 日历容器 - 完全展开无滚动 */
+/* 日历容器 - 完全展开无滚动 + 居中显示 */
 .calendar-container {
     background: white;
     border-radius: 12px;
     padding: 30px;
-    margin-bottom: 30px;
+    margin: 0 auto 30px auto; /* 水平居中 */
     width: 100%;
+    max-width: 900px; /* 限制最大宽度 */
     /* 关键：确保内容完全展开 */
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
+    /* 增强背景效果 */
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
-/* 日历表格包装器 */
+/* 日历表格包装器 - 居中 */
 .calendar-wrapper {
     width: 100%;
     /* 确保包装器也不限制高度 */
     height: auto !important;
     overflow: visible !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .calendar-weekdays {
@@ -619,10 +637,12 @@
     border-radius: 12px;
     padding: 25px;
     width: 100%;
-    max-width: 100%;
+    max-width: 900px; /* 与日历容器保持一致 */
+    margin: 0 auto; /* 水平居中 */
     /* 确保事件列表也不被限制 */
     height: auto !important;
     overflow: visible !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
 .calendar-events h4 {
@@ -659,11 +679,16 @@
     overflow-y: auto;
 }
 
+/* 事件项目样式增强 - 添加删除按钮空间 */
 .event-item {
     padding: 15px;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
     transition: all 0.3s;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .event-item:hover {
@@ -789,10 +814,69 @@
     font-size: 20px;
     color: #999;
 }
+* 删除按钮样式 */
+.event-delete-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s;
+    opacity: 0;
+}
+.event-item:hover .event-delete-btn {
+    opacity: 1;
+}
+
+.event-delete-btn:hover {
+    background: #ff5252;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    #calendar-section,
+    .calendar-section {
+        padding: 10px;
+    }
+    
+    .calendar-container,
+    .calendar-events {
+        max-width: 100%;
+        padding: 20px;
+        margin: 0 10px 20px 10px;
+    }
+    
+    .event-delete-btn {
+        opacity: 1; /* 移动端始终显示 */
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+}
+
+
+
 
 /* AI事件弹窗样式 */
 .ai-event-info {
     padding: 20px;
+}
+
+/* 事件内容区域 */
+.event-info {
+    flex: 1;
 }
 
 .ai-event-author {
@@ -1332,3 +1416,28 @@ button[disabled] {
     color: #667eea;
     padding: 4px 12px;
     border-radius: 15
+    
+    
+    
+/* 通知动画 */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
