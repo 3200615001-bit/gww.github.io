@@ -559,7 +559,7 @@ function getFestivalInfo(year, month, day) {
     return festivals;
 }
 
-// 渲染日历 - 修复版
+// 渲染日历 - 修复版，确保只显示阿拉伯数字
 function renderCalendar() {
     const container = document.getElementById('calendarDays');
     if (!container) return;
@@ -581,13 +581,13 @@ function renderCalendar() {
     
     let html = '';
     
-    // 上月的日期
+    // 上月的日期 - 使用阿拉伯数字
     for (let i = firstDayWeek - 1; i >= 0; i--) {
         const day = prevTotalDays - i;
-        html += `<div class="calendar-day other-month">${day}</div>`;
+        html += `<div class="calendar-day other-month"><div class="day-number">${day}</div></div>`;
     }
     
-    // 本月的日期 - 确保使用数字
+    // 本月的日期 - 确保使用阿拉伯数字
     for (let day = 1; day <= totalDays; day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const isToday = dateStr === todayStr;
@@ -613,10 +613,10 @@ function renderCalendar() {
         `;
     }
     
-    // 下月的日期
+    // 下月的日期 - 使用阿拉伯数字
     const remainingDays = 42 - (firstDayWeek + totalDays);
     for (let day = 1; day <= remainingDays; day++) {
-        html += `<div class="calendar-day other-month">${day}</div>`;
+        html += `<div class="calendar-day other-month"><div class="day-number">${day}</div></div>`;
     }
     
     container.innerHTML = html;
