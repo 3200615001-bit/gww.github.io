@@ -10,6 +10,38 @@ let currentEditingDate = null;
 let currentMonth = new Date();
 let currentCalendarMonth = new Date();
 
+// 中国传统节日数据
+const chineseFestivals = {
+    '01-01': '元旦',
+    '02-14': '情人节',
+    '03-08': '妇女节',
+    '03-12': '植树节',
+    '04-01': '愚人节',
+    '05-01': '劳动节',
+    '05-04': '青年节',
+    '06-01': '儿童节',
+    '07-01': '建党节',
+    '08-01': '建军节',
+    '09-10': '教师节',
+    '10-01': '国庆节',
+    '11-11': '双十一',
+    '12-24': '平安夜',
+    '12-25': '圣诞节'
+};
+
+// 农历节日（需要根据年份计算）
+const lunarFestivals = {
+    '春节': { month: 1, day: 1 },
+    '元宵节': { month: 1, day: 15 },
+    '清明节': { solar: true }, // 特殊处理
+    '端午节': { month: 5, day: 5 },
+    '七夕节': { month: 7, day: 7 },
+    '中秋节': { month: 8, day: 15 },
+    '重阳节': { month: 9, day: 9 },
+    '腊八节': { month: 12, day: 8 },
+    '除夕': { month: 12, day: 30 } // 特殊处理
+};
+
 // ==================== 人设管理功能 ====================
 
 // 初始化个人模块
@@ -53,25 +85,27 @@ function renderPersonaList() {
     
     list.innerHTML = personas.map((persona, index) => `
         <div class="persona-card ${persona.isActive ? 'active' : ''}">
-            <div class="persona-avatar">
-                <img src="${persona.avatar || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="50" fill="%23ddd"/%3E%3C/svg%3E'}" alt="${persona.name}">
-            </div>
-            <div class="persona-info">
-                <h4>${persona.name}</h4>
-                <p>${persona.gender === 'male' ? '男' : persona.gender === 'female' ? '女' : '其他'}</p>
-                <p class="persona-background">${persona.background || '暂无背景描述'}</p>
-                ${persona.boundCharacters && persona.boundCharacters.length > 0 ? 
-                    `<div class="bound-characters">
-                        <span>绑定角色：</span>
-                        ${persona.boundCharacters.map(char => `<span class="char-tag">${char.name}</span>`).join('')}
-                    </div>` : ''}
-            </div>
-            <div class="persona-actions">
-                ${!persona.isActive ? 
-                    `<button class="btn-activate" onclick="activatePersona(${index})">激活</button>` :
-                    `<span class="active-badge">当前使用</span>`}
-                <button class="btn-edit" onclick="editPersona(${index})">编辑</button>
-                <button class="btn-delete" onclick="deletePersona(${index})">删除</button>
+            <div class="persona-card-content">
+                <div class="persona-avatar">
+                    <img src="${persona.avatar || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="50" fill="%23ddd"/%3E%3C/svg%3E'}" alt="${persona.name}">
+                </div>
+                <div class="persona-info">
+                    <h4>${persona.name}</h4>
+                    <p class="persona-gender">${persona.gender === 'male' ? '男' : persona.gender === 'female' ? '女' : '其他'}</p>
+                    <p class="persona-background">${persona.background || '暂无背景描述'}</p>
+                    ${persona.boundCharacters && persona.boundCharacters.length > 0 ? 
+                        `<div class="bound-characters">
+                            <span>绑定角色：</span>
+                            ${persona.boundCharacters.map(char => `<span class="char-tag">${char.name}</span>`).join('')}
+                        </div>` : ''}
+                </div>
+                <div class="persona-actions">
+                    ${!persona.isActive ? 
+                        `<button class="btn-activate" onclick="activatePersona(${index})">激活</button>` :
+                        `<span class="active-badge">当前使用</span>`}
+                    <button class="btn-edit" onclick="editPersona(${index})">编辑</button>
+                    <button class="btn-delete" onclick="deletePersona(${index})">删除</button>
+                </div>
             </div>
         </div>
     `).join('');
@@ -198,7 +232,7 @@ function savePersonas() {
 // 取消人设表单
 function cancelPersonaForm() {
     document.getElementById('persona-form').style.display = 'none';
-    document.getElementById('personaList').style.display = 'grid';
+    document.getElementById('personaList').style.display = 'block';
     renderPersonaList();
 }
 
@@ -489,6 +523,25 @@ function changeCalendarMonth(direction) {
     renderCalendar();
 }
 
+// 获取节日信息
+function getFestivalInfo(year, month, day) {
+    const festivals = [];
+    const dateStr = `${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    
+    // 添加公历节日
+    if (chineseFestivals[dateStr]) {
+        festivals.push({
+            name: chineseFestivals[dateStr],
+            type: 'solar'
+        });
+    }
+    
+    // 这里可以添加农历节日的计算
+    // 需要农历转换库来准确计算
+    
+    return festivals;
+}
+
 // 渲染日历
 function renderCalendar() {
     const container = document.getElementById('calendarDays');
@@ -522,11 +575,15 @@ function renderCalendar() {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const isToday = dateStr === todayStr;
         const events = calendarEvents[dateStr] || [];
+        const festivals = getFestivalInfo(year, month, day);
         
         html += `
-            <div class="calendar-day ${isToday ? 'today' : ''} ${events.length > 0 ? 'has-event' : ''}" 
+            <div class="calendar-day ${isToday ? 'today' : ''} ${events.length > 0 ? 'has-event' : ''} ${festivals.length > 0 ? 'has-festival' : ''}" 
                  onclick="showDateEvent('${dateStr}')">
                 <div class="day-number">${day}</div>
+                ${festivals.length > 0 ? `
+                    <div class="festival-name">${festivals[0].name}</div>
+                ` : ''}
                 ${events.length > 0 ? `
                     <div class="day-events">
                         ${events.slice(0, 2).map(event => `
