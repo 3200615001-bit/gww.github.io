@@ -10,13 +10,14 @@ let currentEditingDate = null;
 let currentMonth = new Date();
 let currentCalendarMonth = new Date();
 
-// 中国传统节日数据
+// 中国传统节日数据 - 公历节日
 const chineseFestivals = {
     '01-01': '元旦',
     '02-14': '情人节',
     '03-08': '妇女节',
     '03-12': '植树节',
     '04-01': '愚人节',
+    '04-04': '清明节',
     '05-01': '劳动节',
     '05-04': '青年节',
     '06-01': '儿童节',
@@ -29,17 +30,20 @@ const chineseFestivals = {
     '12-25': '圣诞节'
 };
 
-// 农历节日（需要根据年份计算）
-const lunarFestivals = {
-    '春节': { month: 1, day: 1 },
-    '元宵节': { month: 1, day: 15 },
-    '清明节': { solar: true }, // 特殊处理
-    '端午节': { month: 5, day: 5 },
-    '七夕节': { month: 7, day: 7 },
-    '中秋节': { month: 8, day: 15 },
-    '重阳节': { month: 9, day: 9 },
-    '腊八节': { month: 12, day: 8 },
-    '除夕': { month: 12, day: 30 } // 特殊处理
+// 农历节日（需要根据年份计算）- 2025年农历节日对应的公历日期
+const lunarFestivals2025 = {
+    '01-29': '春节',
+    '02-12': '元宵节',
+    '05-31': '端午节',
+    '08-04': '七夕节',
+    '09-06': '中秋节',
+    '10-29': '重阳节'
+};
+
+// 特殊节日标记
+const specialDays = {
+    '05-12': '母亲节', // 5月第二个星期日
+    '06-16': '父亲节'  // 6月第三个星期日
 };
 
 // ==================== 人设管理功能 ====================
@@ -536,13 +540,26 @@ function getFestivalInfo(year, month, day) {
         });
     }
     
-    // 这里可以添加农历节日的计算
-    // 需要农历转换库来准确计算
+    // 添加2025年农历节日
+    if (year === 2025 && lunarFestivals2025[dateStr]) {
+        festivals.push({
+            name: lunarFestivals2025[dateStr],
+            type: 'lunar'
+        });
+    }
+    
+    // 添加特殊节日
+    if (specialDays[dateStr]) {
+        festivals.push({
+            name: specialDays[dateStr],
+            type: 'special'
+        });
+    }
     
     return festivals;
 }
 
-// 渲染日历
+// 渲染日历 - 修复版
 function renderCalendar() {
     const container = document.getElementById('calendarDays');
     if (!container) return;
@@ -570,7 +587,7 @@ function renderCalendar() {
         html += `<div class="calendar-day other-month">${day}</div>`;
     }
     
-    // 本月的日期
+    // 本月的日期 - 确保使用数字
     for (let day = 1; day <= totalDays; day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const isToday = dateStr === todayStr;
@@ -611,7 +628,7 @@ function getAICharacterInfo(characterId) {
     return contacts.find(c => c.id === characterId);
 }
 
-// 显示日期事件编辑
+// 显示日期事件编辑 - 增强版
 function showDateEvent(dateStr) {
     currentEditingDate = dateStr;
     const modal = document.getElementById('dateEventModal');
@@ -621,13 +638,23 @@ function showDateEvent(dateStr) {
     }
     
     const events = calendarEvents[dateStr] || [];
+    const festivals = getFestivalForDate(dateStr);
+    
+    // 更新标题显示日期和节日
+    const date = new Date(dateStr);
+    const dateText = `${date.getMonth() + 1}月${date.getDate()}日`;
+    const titleElement = document.getElementById('dateEventTitle');
+    if (festivals.length > 0) {
+        titleElement.textContent = `${dateText} - ${festivals.map(f => f.name).join('、')}`;
+    } else {
+        titleElement.textContent = `${dateText} - 添加事件`;
+    }
     
     // 检查是否已有用户事件
     const userEvent = events.find(e => e.author === 'user');
     
     if (userEvent) {
         // 编辑模式
-        document.getElementById('dateEventTitle').textContent = '编辑事件';
         document.getElementById('eventType').value = userEvent.type;
         document.getElementById('eventContent').value = userEvent.content;
         document.getElementById('eventReminderTime').value = userEvent.reminderTime || '';
@@ -638,7 +665,6 @@ function showDateEvent(dateStr) {
         }
     } else {
         // 新建模式
-        document.getElementById('dateEventTitle').textContent = '添加事件';
         document.getElementById('eventType').value = 'normal';
         document.getElementById('eventContent').value = '';
         document.getElementById('eventReminderTime').value = '';
@@ -646,6 +672,16 @@ function showDateEvent(dateStr) {
     }
     
     modal.style.display = 'flex';
+}
+
+// 获取特定日期的节日
+function getFestivalForDate(dateStr) {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    
+    return getFestivalInfo(year, month, day);
 }
 
 // 处理事件类型改变
@@ -745,6 +781,22 @@ function renderEventList(filter = 'all') {
     
     // 收集所有事件
     Object.keys(calendarEvents).forEach(date => {
+        const festivals = getFestivalForDate(date);
+        
+        // 添加节日作为系统事件
+        festivals.forEach(festival => {
+            allEvents.push({
+                id: 'festival_' + date + '_' + festival.name,
+                type: 'holiday',
+                content: festival.name,
+                author: 'system',
+                authorName: '系统',
+                date: date,
+                createdAt: date
+            });
+        });
+        
+        // 添加用户和AI事件
         calendarEvents[date].forEach(event => {
             allEvents.push({...event, date: date});
         });
@@ -777,7 +829,7 @@ function renderEventList(filter = 'all') {
     if (filter === 'mine') {
         filteredEvents = allEvents.filter(e => e.author === 'user');
     } else if (filter === 'ai') {
-        filteredEvents = allEvents.filter(e => e.author !== 'user');
+        filteredEvents = allEvents.filter(e => e.author !== 'user' && e.author !== 'system');
     }
     
     // 按日期倒序排列
@@ -793,7 +845,7 @@ function renderEventList(filter = 'all') {
         const typeText = getEventTypeText(event.type);
         
         return `
-            <div class="event-item" onclick="${event.author !== 'user' ? `viewAIEvent('${event.date}', '${event.id}')` : ''}">
+            <div class="event-item" onclick="${event.author === 'ai' ? `viewAIEvent('${event.date}', '${event.id}')` : ''}">
                 <div class="event-date">${formatEventDate(event.date)}</div>
                 <div class="event-content">
                     ${event.content}
@@ -801,7 +853,7 @@ function renderEventList(filter = 'all') {
                     ${event.isAnniversaryReminder ? '<span class="event-type-badge anniversary">今日纪念</span>' : ''}
                 </div>
                 <div class="event-author">
-                    ${event.author === 'user' ? '我' : event.authorName || 'AI'}
+                    ${event.author === 'user' ? '我' : event.author === 'system' ? '系统' : event.authorName || 'AI'}
                 </div>
             </div>
         `;
