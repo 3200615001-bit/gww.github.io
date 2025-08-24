@@ -2,6 +2,9 @@
 .personal-container {
     padding: 20px;
     max-width: 100%;
+    /* 确保主容器不限制高度 */
+    height: auto !important;
+    overflow: visible !important;
 }
 
 .personal-header {
@@ -55,12 +58,17 @@
     font-size: 24px;
 }
 
+/* 重要修改：移除滚动限制 */
 .personal-section {
     background: #f8f9fa;
     border-radius: 15px;
     padding: 25px;
     width: 100%;
     max-width: 100%;
+    /* 关键修改：确保内容自然展开 */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
 }
 
 /* ==================== 人设管理样式修复 - 长方形卡片设计 ==================== */
@@ -535,12 +543,19 @@
     overflow-y: auto;
 }
 
-/* ==================== 日历样式修复 - 完整显示 ==================== */
+/* ==================== 日历样式修复 - 完整显示无滚动 ==================== */
+/* 关键修改：确保日历部分完全展开，无滚动 */
+#calendar-section,
 .calendar-section {
     padding: 20px;
     width: 100%;
     max-width: 100%;
-    /* 移除高度限制，让内容自然展开 */
+    /* 关键：移除所有高度限制 */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    /* 确保内容不被裁剪 */
+    min-height: auto;
 }
 
 .calendar-header {
@@ -582,19 +597,25 @@
     text-align: center;
 }
 
-/* 日历容器 - 移除滚动限制 */
+/* 日历容器 - 完全展开无滚动 */
 .calendar-container {
     background: white;
     border-radius: 12px;
     padding: 30px;
     margin-bottom: 30px;
     width: 100%;
-    /* 移除max-height和overflow，让日历完整显示 */
+    /* 关键：确保内容完全展开 */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
 }
 
 /* 日历表格包装器 */
 .calendar-wrapper {
     width: 100%;
+    /* 确保包装器也不限制高度 */
+    height: auto !important;
+    overflow: visible !important;
 }
 
 .calendar-weekdays {
@@ -671,14 +692,17 @@
     border-color: #ff9800;
 }
 
-/* 确保日期数字显示 */
+/* 确保日期数字显示 - 强制使用阿拉伯数字 */
 .day-number {
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 5px;
     /* 强制使用数字字体 */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-variant-numeric: lining-nums;
+    /* 确保不会被其他样式覆盖 */
+    font-variant: normal !important;
+    text-transform: none !important;
 }
 
 /* 节日名称样式 */
@@ -747,6 +771,9 @@
     padding: 25px;
     width: 100%;
     max-width: 100%;
+    /* 确保事件列表也不被限制 */
+    height: auto !important;
+    overflow: visible !important;
 }
 
 .calendar-events h4 {
@@ -1288,8 +1315,20 @@ button[disabled] {
 }
 
 /* 确保所有数字正确显示 */
-.calendar-day * {
-    font-variant-numeric: lining-nums;
-    -webkit-font-feature-settings: "lnum";
-    font-feature-settings: "lnum";
-        }
+.calendar-day *,
+.day-number,
+.calendar-day {
+    font-variant-numeric: lining-nums !important;
+    -webkit-font-feature-settings: "lnum" !important;
+    font-feature-settings: "lnum" !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+}
+
+/* 强制覆盖可能的中文数字样式 */
+.calendar-day::before,
+.calendar-day::after,
+.day-number::before,
+.day-number::after {
+    content: none !important;
+}
