@@ -392,50 +392,29 @@
     overflow-y: auto;
 }
 
-/* ==================== 日历样式修复 - 完整显示无滚动 + 深色卡片 ==================== */
-/* 关键修改：确保日历部分完全展开，无滚动 */
+/* ==================== 日历样式修复 - 清新背景 + 固定日历 ==================== */
+/* 日历整体区域 - 添加清新背景 */
 #calendar-section,
 .calendar-section {
-    padding: 20px;
+    padding: 20px 10px;
     width: 100%;
     max-width: 100%;
-    /* 关键：移除所有高度限制 */
+    /* 禁止整体滚动 */
     height: auto !important;
     max-height: none !important;
-    overflow: visible !important;
-    /* 确保内容不被裁剪 */
-    min-height: auto;
-    /* 居中对齐 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    overflow: hidden !important;
+    /* 清新的渐变背景 */
+    background: linear-gradient(135deg, #e3f2fd 0%, #e8f5e9 50%, #fff3e0 100%);
+    position: relative;
 }
 
-/* 日历深色卡片容器 */
-.calendar-dark-card {
-    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-    border-radius: 20px;
-    padding: 40px;
-    margin: 0 auto 30px auto;
-    width: 100%;
-    max-width: 1000px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    /* 禁止滚动 */
-    overflow: visible !important;
-    height: auto !important;
-    max-height: none !important;
-}
-
-/* 日历头部居中 - 白色文字 */
+/* 日历头部样式 - 保持原有的控制按钮 */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    width: 100%;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 0 10px;
 }
 
 .calendar-controls {
@@ -448,7 +427,7 @@
     width: 40px;
     height: 40px;
     border: none;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s;
@@ -456,101 +435,98 @@
     align-items: center;
     justify-content: center;
     font-size: 16px;
-    color: white;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .calendar-nav:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: white;
+    transform: scale(1.1);
 }
 
 .calendar-month {
     font-size: 20px;
-    font-weight: 500;
-    color: white;
+    font-weight: 600;
+    color: #333;
     min-width: 120px;
     text-align: center;
 }
 
-/* 日历容器 - 完全展开无滚动 + 居中显示 */
+/* 日历容器 - 移除白色背景，使用半透明效果 */
 .calendar-container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    padding: 30px;
-    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 0 auto 30px auto;
     width: 100%;
-    max-width: 900px;
-    /* 关键：确保内容完全展开 */
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    /* 增强背景效果 */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+    /* 固定日历部分 */
     position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* 日历表格包装器 - 居中 */
+/* 日历表格包装器 */
 .calendar-wrapper {
     width: 100%;
-    /* 确保包装器也不限制高度 */
     height: auto !important;
     overflow: visible !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .calendar-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 5px;
+    margin-bottom: 10px;
+    padding: 0 5px;
 }
 
 .weekday {
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    color: #666;
-    padding: 10px 0;
+    color: #555;
+    padding: 8px 0;
 }
 
 .calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
+    gap: 5px;
+    padding: 0 5px;
 }
 
 .calendar-day {
     aspect-ratio: 1;
-    min-height: 90px;
-    border: 1px solid #e0e0e0;
+    min-height: 60px;
+    border: 1px solid rgba(224, 224, 224, 0.8);
     border-radius: 10px;
-    padding: 8px;
+    padding: 5px;
     cursor: pointer;
     transition: all 0.3s;
     position: relative;
-    background: white;
+    background: rgba(255, 255, 255, 0.9);
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .calendar-day:hover {
-    background: #f8f9fa;
+    background: white;
     border-color: #667eea;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .calendar-day.other-month {
     color: #ccc;
-    background: #fafafa;
+    background: rgba(250, 250, 250, 0.5);
 }
 
 .calendar-day.today {
-    background: linear-gradient(135deg, #f3f4ff 0%, #e8eaff 100%);
+    background: linear-gradient(135deg, rgba(243, 244, 255, 0.9) 0%, rgba(232, 234, 255, 0.9) 100%);
     border-color: #667eea;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .calendar-day.today .day-number {
@@ -564,7 +540,7 @@
 
 /* 节日样式增强 */
 .calendar-day.has-festival {
-    background: #fff8e1;
+    background: rgba(255, 248, 225, 0.9);
     border-color: #ffb74d;
 }
 
@@ -573,26 +549,25 @@
     border-color: #ff9800;
 }
 
-/* 确保日期数字显示 - 强制使用阿拉伯数字 */
+/* 日期数字显示 */
 .day-number {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
-    margin-bottom: 5px;
-    /* 强制使用数字字体 */
+    margin-bottom: 2px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-variant-numeric: lining-nums;
-    /* 确保不会被其他样式覆盖 */
     font-variant: normal !important;
     text-transform: none !important;
+    color: #333;
 }
 
 /* 节日名称样式 */
 .festival-name {
-    font-size: 11px;
+    font-size: 10px;
     color: #ff6b6b;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -606,16 +581,16 @@
 
 .day-events {
     display: flex;
-    gap: 3px;
+    gap: 2px;
     position: absolute;
-    bottom: 5px;
+    bottom: 3px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .event-dot {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background: #667eea;
 }
@@ -641,46 +616,51 @@
 }
 
 .more-events {
-    font-size: 10px;
+    font-size: 9px;
     color: #999;
 }
 
-/* 事件列表样式 - 禁止滚动 */
+/* 事件列表样式 - 移除深色背景，只让这部分滚动 */
 .calendar-events {
-    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 30px;
+    padding: 20px;
     width: 100%;
-    max-width: 1000px;
+    max-width: 100%;
     margin: 0 auto;
-    /* 确保事件列表也不被限制 - 禁止滚动 */
-    height: auto !important;
-    overflow: visible !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    /* 固定高度并添加滚动 */
+    height: 400px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .calendar-events h4 {
-    margin-bottom: 20px;
-    color: white;
-    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
 .event-tabs {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    flex-shrink: 0;
 }
 
 .event-tab {
-    padding: 10px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: transparent;
+    padding: 8px 16px;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s;
     font-size: 14px;
     white-space: nowrap;
-    color: white;
+    color: #333;
 }
 
 .event-tab.active {
@@ -689,31 +669,36 @@
     border-color: #667eea;
 }
 
-/* 重要修改：事件列表禁止滚动 */
+/* 重要修改：只让事件列表内容滚动 */
 .event-list {
-    /* 移除高度限制和滚动 */
-    max-height: none !important;
-    overflow: visible !important;
-    height: auto !important;
-    background: rgba(255, 255, 255, 0.95);
+    /* 启用滚动 */
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
-    padding: 20px;
+    padding: 15px;
+    /* 为滚动条预留空间 */
+    margin-right: -5px;
+    padding-right: 20px;
 }
 
-/* 事件项目样式增强 - 添加删除按钮空间 */
+/* 事件项目样式增强 */
 .event-item {
-    padding: 15px;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(240, 240, 240, 0.8);
     cursor: pointer;
     transition: all 0.3s;
     position: relative;
     display: flex;
     align-items: flex-start;
     gap: 10px;
+    margin-right: 5px;
 }
 
 .event-item:hover {
-    background: #f8f9fa;
+    background: rgba(248, 249, 250, 0.9);
+    border-radius: 8px;
 }
 
 .event-date {
@@ -871,17 +856,45 @@
 @media (max-width: 768px) {
     #calendar-section,
     .calendar-section {
-        padding: 10px;
-    }
-    
-    .calendar-dark-card,
-    .calendar-events {
-        padding: 20px;
-        margin: 0 10px 20px 10px;
+        padding: 10px 5px;
+        /* 移动端保持清新背景 */
+        background: linear-gradient(135deg, #e3f2fd 0%, #e8f5e9 50%, #fff3e0 100%);
     }
     
     .calendar-container {
-        padding: 20px;
+        padding: 15px 10px;
+        margin: 0 5px 20px 5px;
+    }
+    
+    .calendar-events {
+        padding: 15px;
+        margin: 0 5px;
+        /* 移动端调整高度 */
+        height: 350px;
+    }
+    
+    .event-list {
+        padding: 10px;
+        padding-right: 15px;
+    }
+    
+    .calendar-weekdays,
+    .calendar-days {
+        gap: 3px;
+        padding: 0 2px;
+    }
+    
+    .calendar-day {
+        min-height: 50px;
+        padding: 3px;
+    }
+    
+    .day-number {
+        font-size: 14px;
+    }
+    
+    .festival-name {
+        font-size: 9px;
     }
     
     .event-delete-btn {
@@ -889,6 +902,24 @@
         width: 24px;
         height: 24px;
         font-size: 14px;
+    }
+    
+    .calendar-nav {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .calendar-month {
+        font-size: 18px;
+    }
+    
+    .event-tabs {
+        gap: 5px;
+    }
+    
+    .event-tab {
+        padding: 6px 12px;
+        font-size: 13px;
     }
 }
 
@@ -1139,24 +1170,23 @@
     }
 }
 
-/* 滚动条美化 */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+/* 美化滚动条 - 仅用于事件列表 */
+.event-list::-webkit-scrollbar {
+    width: 6px;
 }
 
-::-webkit-scrollbar-track {
-    background: #f0f0f0;
-    border-radius: 4px;
+.event-list::-webkit-scrollbar-track {
+    background: rgba(240, 240, 240, 0.5);
+    border-radius: 3px;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
+.event-list::-webkit-scrollbar-thumb {
+    background: rgba(204, 204, 204, 0.8);
+    border-radius: 3px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #999;
+.event-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(153, 153, 153, 0.9);
 }
 
 /* 修复移动端触摸设备优化 */
